@@ -2,11 +2,27 @@ var prompt = require('prompt-sync')();
 var includes = require('array-includes');
 
 class Ingredient {
-    constructor(name, isVegetarian) {
+    constructor(name, isVegetarian, isPescitarian, isCarnivore) {
         this.name = name;
         this.isVegetarian = isVegetarian;
+        this.isPescitarian = isPescitarian;
+        this.isCarnivore = isCarnivore;
       }
 }
+
+class Fromage extends Ingredient {
+    constructor(name) {
+        this.name = 'Fromage : ' + name;
+        super(name, true, false, false)
+      }
+}
+
+// class Sauces extends Ingredient {
+//     constructor(name) {
+//         this.name = 'Sauce : ' name;
+//         super(name, true, false, false)
+//       }
+// }
 
 class Kebab {
     constructor(vegetarien, ingredients){
@@ -16,129 +32,130 @@ class Kebab {
     isVegetarian(){
         return this.ingredients.every(ingredient => ingredient.isVegetarian);
     }
+    isPescitarian(){
+        return this.ingredients.find(ingredient => ingredient.isPescitarian);
+    }
+    isCarnivore(){
+        return this.ingredients.find(ingredient => ingredient.isCarnivore);
+    }
+    isDoubleCheese(){
+        return this.ingredients.find(ingredient => ingredient.isDoubleCheese);
+    }
 }
 
 var ingredientsDisponible = [];
-var ingrédientsClient = [];
+var ingredientsClient = [];
 
-var tomate = new Ingredient('Tomate', true);
-var viande = new Ingredient('Viande', false);
-var salade = new Ingredient('Salade', true);
-var oignon = new Ingredient('Oignon', true);
-var pain = new Ingredient('Pain', true);
+var tomate = new Ingredient('Tomate', true, false, false);
+var viande = new Ingredient('Doner', false, false, true);
+var salade = new Ingredient('Salade', true, false, false);
+var oignon = new Ingredient('Oignon', true, false, false);
+var poisson = new Ingredient('Poisson', false, true, false);
+var crevettes = new Ingredient('Crevettes', false, true, false);
+var surimi = new Ingredient('Surimi', false, true, false);
+var poulet = new Ingredient('Poulet', false, false, true);
+var fromage = new Ingredient('Fromage', false, false, false);
+// var blanche =  new Sauce('Blanche');
+// var bechamel =  new Sauce('Béchamel');
+// var algerienne =  new Sauce('Algérienne');
+// var ketchup =  new Sauce('Ketchup');
+// var mayo =  new Sauce('Mayonaise');
+// var moutarde =  new Sauce('Moutarde');
+// var barbecue =  new Sauce('Barbecue');
+// var samourai =  new Sauce('samouraï');
+// var cheddar =  new Sauce('Cheddar');
+// var raclette =  new Sauce('Raclette');
+// var maroilles =  new Sauce('Maroilles');
 
 ingredientsDisponible.push(tomate);
 ingredientsDisponible.push(viande);
 ingredientsDisponible.push(salade);
 ingredientsDisponible.push(oignon);
-ingredientsDisponible.push(pain);
+ingredientsDisponible.push(poisson);
+ingredientsDisponible.push(crevettes);
+ingredientsDisponible.push(surimi);
+ingredientsDisponible.push(poulet);
+ingredientsDisponible.push(fromage);
 
 console.log('\n\nListe des ingrédients disponibles :');
 console.table(ingredientsDisponible);
 
 var choix = '';
 var choix2= '';
-var kebabFini = false
+var kebabFini = false;
 while (!kebabFini){
-    console.log("Bonjour, que voulez-vous dans votre Kebab ?\n")
+    console.log("\nBonjour, que voulez-vous dans votre Kebab ?");
     choix = prompt();
-    if (choix != 'Tomate' && choix != 'Viande' && choix != 'Salade' && choix != 'Oignon' && choix != 'Pain'){
-        console.log('Veuillez choisir un ingrédient existant.')
-        choix = '';
-    }
-    if (choix == 'Tomate'){
-        if (!ingrédientsClient.includes(tomate) || ingrédientsClient == []) {
-            ingrédientsClient.push(tomate)
-            console.log("Voulez-vous autre chose dans votre Kebab ? oui ou non\n")
-            choix2 = prompt();
-            if (choix2 == 'oui') {
-                choix = '';
-                choix2 = '';
-            } else {
-                kebabFini = true
-            }
-        } else {
-            console.log("Votre Kebab contient déjà de la tomate. Voulez-vous autre chose dans votre Kebab ? oui ou non\n")
-            choix2 = prompt()
-            if (choix2 == 'oui') {
-                choix = '';
-                choix2 = '';
-            } else {
-                kebabFini = true
-            }
-        }
-    }
-    if (choix == 'Viande'){
-        if (!ingrédientsClient.includes(viande) || ingrédientsClient == []) {
-            ingrédientsClient.push(viande)
-            console.log("Voulez-vous autre chose dans votre Kebab ? oui ou non\n")
-            choix2 = prompt();
-            if (choix2 == 'oui') {
-                choix = '';
-                choix2 = '';
-            } else {
-                kebabFini = true
-            }
-        } else {
-            console.log("Votre Kebab contient déjà de la viande. Voulez-vous autre chose dans votre Kebab ? oui ou non\n")
-            choix2 = prompt()
-            if (choix2 == 'oui') {
-                choix = '';
-                choix2 = '';
-            } else {
-                kebabFini = true
-            }
-        }
-    }
-    if (choix == 'Salade'){
-        if (!ingrédientsClient.includes(salade) || ingrédientsClient == []) {
-            ingrédientsClient.push(salade)
-            choix2 = prompt("Voulez-vous autre chose dans votre Kebab ? oui ou non\n")
-            if (choix2 == 'oui') {
-                choix = '';
-                choix2 = '';
-            } else {
-                kebabFini = true
-            }
-        } else {
-            choix2 = prompt("Votre Kebab contient déjà de la salade. Voulez-vous autre chose dans votre Kebab ? oui ou non\n")
-            if (choix2 == 'oui') {
-                choix = '';
-                choix2 = '';
-            } else {
-                kebabFini = true
-            }
-        }
-    }
-    if (choix == 'Oignon'){
-        if (!ingrédientsClient.includes(oignon) || ingrédientsClient == []) {
-            ingrédientsClient.push(oignon)
-            choix2 = prompt("Voulez-vous autre chose dans votre Kebab ? oui ou non\n")
-            if (choix2 == 'oui') {
-                choix = '';
-                choix2 = '';
-            } else {
-                kebabFini = true
-            }
-        } else {
-            choix2 = prompt("Votre Kebab contient déjà de la oignon. Voulez-vous autre chose dans votre Kebab ? oui ou non\n")
-            if (choix2 == 'oui') {
-                choix = '';
-                choix2 = '';
-            } else {
-                kebabFini = true
-            }
-        }
+    switch (choix) {
+        case 'Tomate':
+            ingredientChoice(tomate);
+            break;
+        case 'Doner':
+            ingredientChoice(viande);
+            break;
+        case 'Salade':
+            ingredientChoice(salade);
+            break;
+        case 'Oignon':
+            ingredientChoice(oignon);
+            break;
+        case 'Poisson':
+            ingredientChoice(poisson);
+            break;
+        case 'Crevettes':
+            ingredientChoice(crevettes);
+            break;
+        case 'Fromage':
+            ingredientChoice(fromage);
+            break;    
+        default:
+            console.log('Veuillez choisir un ingrédient existant.');
+            choix = '';
+            break;
     }
 }
-if(ingrédientsClient.includes(viande)){
+
+var kebab = new Kebab(true, ingredientsClient);
+
+if (kebab.isPescitarian()) {
+    console.log("Le kebab est pescitarien");
+} else if (kebab.isVegetarian()) {
+    console.log("Le kebab est végétarien");
+} else if (kebab.isCarnivore()) {
     console.log("Le kebab est carnivore");
-} else {
-    console.log("Végétarien");
 }
-console.log()
-
-
-var ingrédientsClient = [];
-
-var kebab = new Kebab(true, ingrédientsClient);
+if(kebab.isDoubleCheese()){
+    console.log("(Avec ration double cheese");
+}
+function ingredientChoice(ingredient){
+    if (!ingredientsClient.includes(ingredient) || ingredientsClient == []) {
+        if(ingredient.name == "Fromage"){
+            console.log("Double ration ?");
+            choix2 = prompt();
+            if(choix2 == "oui"){
+                ingredientsClient.push(ingredient);
+                choix = '';
+                choix2 = '';
+            }
+        } else {
+            ingredientsClient.push(ingredient);
+            console.log("\nVoulez-vous autre chose dans votre Kebab ? oui ou non");
+            choix2 = prompt();
+            if (choix2 == 'oui') {
+                choix = '';
+                choix2 = '';
+            } else {
+                kebabFini = true;
+            }
+        }
+    } else {
+        console.log("\nVotre Kebab contient déjà de l'oignon. Voulez-vous autre chose dans votre Kebab ? oui ou non");
+        choix2 = prompt();
+        if (choix2 == 'oui') {
+            choix = '';
+            choix2 = '';
+        } else {
+            kebabFini = true;
+        }
+    }
+}
